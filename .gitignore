@@ -1,0 +1,11 @@
+node_modules/
+test-results/
+playwright-report/
+dist/
+package-lock.json
+
+# editor artifacts — standing policy (house-style README.md)
+.#*
+\#*#
+*~
+*.swp

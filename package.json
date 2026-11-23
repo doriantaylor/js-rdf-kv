@@ -1,0 +1,49 @@
+{
+    "name": "@methodandstructure/rdf-kv",
+    "version": "0.0.1",
+    "description": "ES module implementation of the RDF-KV protocol.",
+    "keywords": [
+        "RDF",
+        "HTML",
+        "form",
+        "protocol",
+        "RDF-KV"
+    ],
+    "homepage": "https://github.com/dorinataylor/js-rdf-kv#readme",
+    "bugs": {
+        "url": "https://github.com/dorinataylor/js-rdf-kv/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/dorinataylor/js-rdf-kv.git"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "license": "Apache-2.0",
+    "author": "Dorian Taylor",
+    "type": "module",
+    "main": "dist/rdf-kv.js",
+    "exports": {
+        ".": "./dist/rdf-kv.js"
+    },
+    "files": [
+        "dist/rdf-kv.js",
+        "src/"
+    ],
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "build:bundle": "esbuild src/rdf-kv.js --bundle --format=esm --outfile=dist/rdf-kv.js",
+        "build:minify": "esbuild src/rdf-kv.js --bundle --format=esm --minify --outfile=dist/rdf-kv.min.js",
+        "build": "npm run build:bundle && npm run build:minify",
+        "test": "node --test"
+    },
+    "devDependencies": {
+        "n3": "^2.13.12"
+    },
+    "dependencies": {
+        "@methodandstructure/uuid-ncname": "^0.0.1"
+    }
+}
