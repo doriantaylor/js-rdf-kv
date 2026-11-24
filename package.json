@@ -29,6 +29,7 @@
     },
     "files": [
         "dist/rdf-kv.js",
+        "dist/rdf-kv.min.js",
         "src/"
     ],
     "directories": {

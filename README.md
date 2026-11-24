@@ -9,16 +9,20 @@ instructions for making changes to an RDF graph.
 import * as RDF from 'rdflib';
 import { KV } from '@methodandstructure/rdf-kv';
 
-# initialize the processor
+// let's say we're doing this in the browser
+window.graph ||= new RDF.Store();
+
+// initialize the processor
 const kv = new KV();
 
-kv = RDF::KV.new subject: my_url, graph: graph_url
+// how about some form data
+const fd = new FormData(document.forms[0]);
 
-# use it to generate a changeset, e.g. from web form POST data
-cs = kv.process rack.POST
+// this will give us a delta object
+const delta = KV.process(fd);
 
-# now apply it to your RDF::Repository
-cs.apply repo
+// now apply it to your graph
+delta.apply(window.graph);
 ```
 
 ## Protocol Documentation
