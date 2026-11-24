@@ -9,13 +9,13 @@
         "protocol",
         "RDF-KV"
     ],
-    "homepage": "https://github.com/dorinataylor/js-rdf-kv#readme",
+    "homepage": "https://github.com/doriantaylor/js-rdf-kv#readme",
     "bugs": {
-        "url": "https://github.com/dorinataylor/js-rdf-kv/issues"
+        "url": "https://github.com/doriantaylor/js-rdf-kv/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/dorinataylor/js-rdf-kv.git"
+        "url": "git://github.com/doriantaylor/js-rdf-kv.git"
     },
     "publishConfig": {
         "access": "public"
@@ -35,15 +35,13 @@
         "test": "test"
     },
     "scripts": {
-        "build:bundle": "esbuild src/rdf-kv.js --bundle --format=esm --outfile=dist/rdf-kv.js",
-        "build:minify": "esbuild src/rdf-kv.js --bundle --format=esm --minify --outfile=dist/rdf-kv.min.js",
+        "build:bundle": "esbuild src/rdf-kv.js --bundle --format=esm --external:rdflib --external:@methodandstructure/uuid-ncname --outfile=dist/rdf-kv.js",
+        "build:minify": "esbuild src/rdf-kv.js --bundle --format=esm --external:rdflib --external:@methodandstructure/uuid-ncname --minify --outfile=dist/rdf-kv.min.js",
         "build": "npm run build:bundle && npm run build:minify",
         "test": "node --test"
     },
-    "devDependencies": {
-        "n3": "^2.13.12"
-    },
     "dependencies": {
+        "rdflib": "^2.4.1",
         "@methodandstructure/uuid-ncname": "^0.0.1"
     }
 }

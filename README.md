@@ -1,4 +1,4 @@
-# `rdf-kv` — Turn Key-Value Pairs into 
+# `rdf-kv` — Turn HTML Key-Value Form Pairs into a Graph Delta
 
 This module is yet another implementation of the
 [RDF-KV](https://doriantaylor.com/rdf-kv) protocol. This protocol
@@ -6,8 +6,12 @@ defines a method for embedding into an ordinary HTML form a set of
 instructions for making changes to an RDF graph.
 
 ```js
+import * as RDF from 'rdflib';
+import { KV } from '@methodandstructure/rdf-kv';
 
 # initialize the processor
+const kv = new KV();
+
 kv = RDF::KV.new subject: my_url, graph: graph_url
 
 # use it to generate a changeset, e.g. from web form POST data
