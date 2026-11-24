@@ -4,7 +4,14 @@ import { quadKey, isPattern } from '../src/delta.js';
 
 let fails = 0, count = 0;
 const ok = (c, m) => { count++; if (!c) { fails++; console.log('  FAIL', m); } };
-const throws = (fn, cls, m) => { try { fn(); ok(false, m + ' (no throw)'); } catch (e) { ok(e instanceof cls, m + ' ' + e.message); } };
+const throws = (fn, cls, m) => {
+    try {
+        fn();
+        ok(false, m + ' (no throw)');
+    } catch (e) {
+        ok(e instanceof cls, m + ' ' + e.message);
+    }
+};
 
 for (const [fname, f] of [['builtin', defaultFactory], ['rdflib', DataFactory]]) {
     console.log('factory:', fname);
@@ -12,8 +19,12 @@ for (const [fname, f] of [['builtin', defaultFactory], ['rdflib', DataFactory]])
     const suri = n('https://my.website/internet/home/page');
     const root = n('https://my.website/');
     const DC = 'http://purl.org/dc/terms/', XHV = 'http://www.w3.org/1999/xhtml/vocab#';
-    const prefixes = { dct: DC, foaf: 'http://xmlns.com/foaf/0.1/', skos: 'http://www.w3.org/2004/02/skos/core#',
+    const prefixes = {
+        dct: DC,
+        foaf: 'http://xmlns.com/foaf/0.1/',
+        skos: 'http://www.w3.org/2004/02/skos/core#',
         ibis: 'https://vocab.methodandstructure.com/ibis#' };
+
     const mk = (o = {}) => new KV({ subject: suri, prefixes, factory: f, ...o });
     const has = (list, q) => list.some((x) => quadKey(x) === quadKey(q));
     const st = (s, p, o, g) => f.quad(s, p, o, g ?? f.defaultGraph());
@@ -34,7 +45,10 @@ for (const [fname, f] of [['builtin', defaultFactory], ['rdflib', DataFactory]])
 
     // -- macros
     let kv = mk();
-    kv.process({ '$ GRAPH': 'http://foo.com/lol', '$ SUBJECT': 'urn:uuid:7c04f768-e23f-488b-9357-de15e7e1ac70', '$ PREFIX': 'foo: http://foo.bar/prefix' });
+    kv.process({
+        '$ GRAPH': 'http://foo.com/lol',
+        '$ SUBJECT': 'urn:uuid:7c04f768-e23f-488b-9357-de15e7e1ac70',
+        '$ PREFIX': 'foo: http://foo.bar/prefix' });
     ok(kv.graph.value === 'http://foo.com/lol', 'GRAPH');
     ok(kv.subject.value === 'urn:uuid:7c04f768-e23f-488b-9357-de15e7e1ac70', 'SUBJECT');
     ok(kv.prefixes.get('foo') === 'http://foo.bar/prefix', 'PREFIX');
@@ -45,11 +59,16 @@ for (const [fname, f] of [['builtin', defaultFactory], ['rdflib', DataFactory]])
     p = mk().process({ 'dct:audience : $': '$NEW_UUID_URN' });
     ok(p.additions[0].object.termType === 'NamedNode' && /^urn:uuid:[0-9a-f-]{36}$/.test(p.additions[0].object.value), 'generated urn');
 
-    p = mk().process({ '$ PREFIX': 'dct: http://purl.org/dc/terms/', '$ lol $': '$NEW_UUID_URN', 'dct:creator : $': '$lol' });
+    p = mk().process({
+        '$ PREFIX': 'dct: http://purl.org/dc/terms/',
+        '$ lol $': '$NEW_UUID_URN',
+        'dct:creator : $': '$lol' });
+
     ok(p.additions.length === 1 && p.additions[0].object.value.startsWith('urn:uuid:'), 'macro set to generated value');
 
     p = mk().process({ '$ lol': ['Hi!', 'lolwut'], 'dct:title $': '$lol' });
-    ok(has(p.additions, st(suri, title, lit('lolwut'))) && has(p.additions, st(suri, title, lit('Hi!'))), 'multi-valued macro');
+    ok(has(p.additions, st(suri, title, lit('lolwut'))) &&
+        has(p.additions, st(suri, title, lit('Hi!'))), 'multi-valued macro');
 
     p = mk().process({ 'dct:created ^xsd:dateTime $': '$NEW_TIME_UTC' });
     const ts = p.additions[0].object;
